@@ -1,0 +1,82 @@
+import React, {Component} from 'react';
+import {hoverEffect, themeColor} from "./utils";
+import {IoStatsChart} from "react-icons/all";
+import styled from "styled-components";
+import FlightServices from "../../services/FlightServices";
+
+class DashboardLanded_Departure extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            totalFlightCount:0
+        }
+    }
+    componentDidMount() {
+        FlightServices.getArrivalFlight().then(response=>{
+            this.setState({totalFlightCount:response.data.length})
+        })
+    }
+
+    render() {
+        return (
+            <EarningsCard>
+                <CardContent>
+                    <Chart>
+                        <IoStatsChart />
+                    </Chart>
+                    <EarningsText>{this.props.typeOfFlight}</EarningsText>
+                    <Earning>{this.state.totalFlightCount}</Earning>
+                </CardContent>
+            </EarningsCard>
+        );
+    }
+}
+
+const EarningsCard = styled.div`
+  height: 100%;
+  width: 14rem;
+  background-color: ${themeColor};
+  padding: 1rem;
+  border-radius: 1rem;
+  color: white;
+  transition: 0.4s ease-in-out;
+  &:hover {
+    box-shadow: ${hoverEffect};
+  }
+  @media screen and (min-width: 320px) and (max-width: 1080px) {
+    width: 80%;
+  }
+`;
+
+const CardContent = styled.div`
+  margin: 1rem;
+`;
+
+const Chart = styled.div`
+  display: flex;
+  justify-content: center;
+  svg {
+    height: 4rem;
+    width: 4rem;
+  }
+`;
+
+const EarningsText = styled.h3`
+  text-align: center;
+  font-weight: normal;
+  padding: 0.4rem 0;
+`;
+
+const Earning = styled.h2`
+  text-align: center;
+`;
+
+const EarningsIncrease = styled.h5`
+  text-align: center;
+  font-weight: normal;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  border-radius: 2rem;
+`;
+
+export default DashboardLanded_Departure;
